@@ -1,0 +1,5 @@
+TodoList.js = skills.js 
+Todo.js = About.js 
+
+      <Skills setSkills={setvariSkill} />
+      <Education varSkill={variSkill} />
