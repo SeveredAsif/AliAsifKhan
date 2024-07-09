@@ -13,11 +13,32 @@ const initialSkills = [
 function AboutPage() {
   const [variSkill, setvariSkill] = useState(initialSkills);
   console.log("app.js", variSkill);
+
+  const deleteHandler = id => {
+    const newSkills = variSkill.filter(item=>{
+      return item.id !==id 
+    })
+    setvariSkill(newSkills)
+  }
+
+  const updateHandler = ski => {
+    setvariSkill(variSkill.map(item=>{
+      if(item.id===ski.id) {
+        return {
+          ...item,
+          skill:ski.skill
+        }
+      } else {
+        return item 
+      }
+    }))
+  }
+
   return (
     <div>
       <h1>About Page</h1>
       <Education skills={variSkill} setSkills={setvariSkill} />
-      <Skills skills={variSkill} />
+      <Skills skills={variSkill} deleteHandler={deleteHandler} updateHandler={updateHandler}/>
     </div>
   );
 }

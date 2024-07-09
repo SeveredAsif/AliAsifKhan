@@ -14,7 +14,7 @@ function Education({ skills, setSkills }) {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSkills([...skills, newSkill]);
+    setSkills([newSkill,...skills]);
     setnewSkill({ id: "", skill: "" });
   };
   return (

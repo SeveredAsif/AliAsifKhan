@@ -1,11 +1,11 @@
 import React from "react";
 import About from "./About";
 
-function Skills({skills}) {
+function Skills({skills, deleteHandler, updateHandler}) {
   return (
     <div>
       {skills.map((skillVar) => {
-        return <About key={skillVar.id} skills={skillVar} />;
+        return <About key={skillVar.id} skills={skillVar} deleteHandler={deleteHandler} updateHandler={updateHandler} />;
       })}
     </div>
   );
