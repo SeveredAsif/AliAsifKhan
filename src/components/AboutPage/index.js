@@ -1,44 +1,75 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Education from "./Education";
 import Skills from "./Skills";
-
-const initialSkills = [
-  { id: 1, skill: "Python" },
-  { id: 2, skill: "JavaScript" },
-  { id: 3, skill: "C++" },
-  { id: 4, skill: "React" },
-  { id: 5, skill: "Node" },
-];
+import axios from "axios";
 
 function AboutPage() {
-  const [variSkill, setvariSkill] = useState(initialSkills);
+  const [variSkill, setvariSkill] = useState([]);
   console.log("app.js", variSkill);
 
-  const deleteHandler = id => {
-    const newSkills = variSkill.filter(item=>{
-      return item.id !==id 
-    })
-    setvariSkill(newSkills)
-  }
+  useEffect(() => {
+    axios
+      .get("http://localhost:8888/skills", {})
+      .then((res) => {
+        console.log(res);
+        setvariSkill(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
-  const updateHandler = ski => {
-    setvariSkill(variSkill.map(item=>{
-      if(item.id===ski.id) {
-        return {
-          ...item,
-          skill:ski.skill
-        }
-      } else {
-        return item 
-      }
-    }))
-  }
+  //    const newSkills = variSkill.filter((item) => {
+  //  return item.id !== id;
+  //});
+
+  const deleteHandler = (id) => {
+    axios
+      .delete(`http://localhost:8888/skills/${id}`)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    const newSkills = variSkill.filter((item) => {
+      return item.id !== id;
+    });
+    setvariSkill(newSkills);
+  };
+
+  const updateHandler = (ski) => {
+    axios
+      .put(`http://localhost:8888/skills/${ski.id}`, ski)
+      .then((res) => {
+        console.log(res);
+        setvariSkill(
+          variSkill.map((item) => {
+            if (item.id === ski.id) {
+              return {
+                ...item,
+                skill: ski.skill,
+              };
+            } else {
+              return item;
+            }
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div>
       <h1>About Page</h1>
       <Education skills={variSkill} setSkills={setvariSkill} />
-      <Skills skills={variSkill} deleteHandler={deleteHandler} updateHandler={updateHandler}/>
+      <Skills
+        skills={variSkill}
+        deleteHandler={deleteHandler}
+        updateHandler={updateHandler}
+      />
     </div>
   );
 }

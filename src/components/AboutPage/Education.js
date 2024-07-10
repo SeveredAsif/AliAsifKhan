@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios'
 
 function Education({ skills, setSkills }) {
   const [newSkill, setnewSkill] = useState({
@@ -15,6 +16,13 @@ function Education({ skills, setSkills }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSkills([newSkill,...skills]);
+    axios.post('http://localhost:8888/skills',newSkill)
+      .then(res=>{
+        console.log(res)
+      })
+      .catch(err=>{
+        console.log(err)
+      })
     setnewSkill({ id: "", skill: "" });
   };
   return (
